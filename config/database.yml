@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASS'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: my_helper_api_development
+
+test:
+  <<: *default
+  database: my_helper_api_test
+
+production:
+  <<: *default
+  database: my_helper_api_production
+  username: my_helper_api
+  password: <%= ENV['MY_HELPER_API_DATABASE_PASSWORD'] %>
