@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  it { is_expected.to(have_many(:want_to_categories)) }
   it { validate_uniqueness_of(:username) }
   it { validate_uniqueness_of(:email) }
 

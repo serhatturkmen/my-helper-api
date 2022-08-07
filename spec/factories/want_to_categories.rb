@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :want_to_category do
-    name { "MyString" }
-    description { "MyString" }
-    color { "MyString" }
-    position { "MyString" }
+    name { Faker::Lorem.characters(number: 10) }
+    description { Faker::Lorem.characters(number: 10) }
+    color { Faker::Lorem.word }
+    position { Faker::Number.between(from: 1, to: 100) }
     active { false }
     user { nil }
   end
