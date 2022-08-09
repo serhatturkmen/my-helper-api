@@ -50,7 +50,7 @@ jobs:
           command: bundle exec rake db:migrate
       - run:
           name: Run tests
-          command: bundle exec rspec
+          command: bundle exec rspec --profile 10 --color --out /tmp/test-results/rspec.xml
 
 workflows:
   version: 2
