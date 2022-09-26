@@ -3,11 +3,12 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    field :users, [UserType], null: false
+    field :user_information, UserType, null: false
 
-    def users
+    def user_information
       authorized?(context)
-      User.all
+
+      context[:current_user]
     end
 
     field :want_to_categories, [WantToCategoryType], null: false
@@ -27,7 +28,7 @@ module Types
 
     rescue ActiveRecord::RecordNotFound
       raise GraphQL::ExecutionError, "Could not find WantToCategory with id #{id}"
-   end
+    end
 
     field :want_to_items, [WantToItemType], null: false do
       argument :want_to_category_id, ID, required: true
@@ -41,7 +42,7 @@ module Types
 
     rescue ActiveRecord::RecordNotFound
       raise GraphQL::ExecutionError, "Could not find WantToCategory with id #{id}"
-   end
+    end
 
     field :want_to_item, WantToItemType, null: false do
       argument :id, ID, required: true
@@ -51,7 +52,7 @@ module Types
       authorized?(context)
 
       want_to_category_ids = context[:current_user].want_to_categories.pluck(:id)
-		WantToItem.find_by(want_to_category_id: want_to_category_ids, id:id)
+      WantToItem.find_by(want_to_category_id: want_to_category_ids, id: id)
 
     rescue ActiveRecord::RecordNotFound
       raise GraphQL::ExecutionError, "Could not find WantToItem with id #{id}"
