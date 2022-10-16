@@ -4,5 +4,6 @@ module Types
     field :signup, mutation: Mutations::Signup, camelize: false
     field :add_want_to_category, mutation: Mutations::AddWantToCategory, camelize: false
     field :add_want_to_item, mutation: Mutations::AddWantToItem, camelize: false
+    field :update_profile, mutation: Mutations::UpdateProfile, camelize: false
   end
 end
