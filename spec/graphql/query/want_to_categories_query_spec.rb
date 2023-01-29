@@ -20,7 +20,8 @@ RSpec.describe('Query', type: :request) do
   let(:want_to_category) { create(:want_to_category, user: user) }
   let(:want_to_category_2) { create(:want_to_category, user: user) }
   let(:want_to_category_3) { create(:want_to_category, user: create(:user)) }
-  let(:want_to_item_3) { create(:want_to_item, want_to_category: want_to_category) }
+  let(:want_to_item) { create(:want_to_item, want_to_category: want_to_category) }
+  let(:want_to_item_2) { create(:want_to_item, want_to_category: want_to_category, active: false) }
 
   let(:headers) do
     { 'Api-Token' => user.token }
@@ -31,7 +32,8 @@ RSpec.describe('Query', type: :request) do
     want_to_category
     want_to_category_2
     want_to_category_3
-    want_to_item_3
+    want_to_item
+    want_to_item_2
   end
 
   def request

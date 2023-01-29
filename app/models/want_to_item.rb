@@ -3,6 +3,8 @@ class WantToItem < ApplicationRecord
 
   validates :name, presence: true
   validates :want_to_category_id, presence: true
+
+  scope :active, -> { where(active: true) }
 end
 
 # == Schema Information
