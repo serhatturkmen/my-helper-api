@@ -3,6 +3,10 @@ class WantToCategory < ApplicationRecord
   has_many :want_to_items, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true, length: { minimum: 3, maximum: 30 }
+
+  def count
+    want_to_items.count
+  end
 end
 
 # == Schema Information
