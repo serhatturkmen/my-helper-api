@@ -4,7 +4,7 @@ module Mutations
     field :errors, [String], null: false
 
     argument :name, String, required: true, camelize: false
-    argument :want_to_category_id, Integer, required: true, camelize: false
+    argument :want_to_category_id, ID, required: true, camelize: false
     argument :description, String, required: false, camelize: false
     argument :url, String, required: false, camelize: false
     argument :active, Boolean, required: false
@@ -16,11 +16,13 @@ module Mutations
       want_to_item = WantToItem.new(
         name: name,
         description: description,
-        url: url,
-        active: active,
-        position: position,
         want_to_category_id: want_to_category_id,
       )
+
+      want_to_item.url = url if url
+      want_to_item.position = position if position
+      want_to_item.active = active if active
+      want_to_item.description = description if description
 
       if want_to_item.save
         {
