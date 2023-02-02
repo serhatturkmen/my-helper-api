@@ -48,6 +48,17 @@ RSpec.describe('Query', type: :request) do
     expect(json['data']['wantToCategories'].pluck('count')).to(match_array([0, 1]))
   end
 
+  it 'success without item' do
+    want_to_item.destroy
+    want_to_item_2.destroy
+
+    request
+    json = JSON.parse(response.body)
+
+    expect(json['data']['wantToCategories'].count).to(eq(2))
+    expect(json['data']['wantToCategories'].pluck('count')).to(match_array([0, 0]))
+  end
+
   it 'invalid token' do
     headers['Api-Token'] = 'invalid'
 

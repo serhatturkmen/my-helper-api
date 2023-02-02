@@ -10,6 +10,7 @@ RSpec.describe('Query', type: :request) do
         active
         color
         position
+        count
       }
     }
     |
@@ -34,10 +35,13 @@ RSpec.describe('Query', type: :request) do
   end
 
   it 'success' do
+    create(:want_to_item, want_to_category: want_to_category)
+
     request(want_to_category.id)
     json = JSON.parse(response.body)
 
     expect(json['data']['wantToCategory']['name']).to(eq(want_to_category.name))
+    expect(json['data']['wantToCategory']['count']).to(eq(1))
   end
 
   it 'fail not found want to item' do

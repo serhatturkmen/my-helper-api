@@ -28,6 +28,7 @@ RSpec.describe('Query', type: :request) do
   let(:description) { Faker::Lorem.characters(number: 10) }
   let(:url) { Faker::Internet.url }
   let(:user) { create(:user) }
+
   let(:variables) do
     {
       input: {
@@ -40,6 +41,7 @@ RSpec.describe('Query', type: :request) do
       }
     }
   end
+
   let(:headers) do
     { 'Api-Token' => user.token }
   end
