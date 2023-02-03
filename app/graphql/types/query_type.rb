@@ -58,5 +58,14 @@ module Types
     rescue ActiveRecord::RecordNotFound
       raise GraphQL::ExecutionError, "Could not find WantToItem with id #{id}"
     end
+
+    field :want_to_category_option_type, [Types::OptionType], null: false
+
+    def want_to_category_option_type
+      authorized?(context)
+
+      want_to_categories = WantToCategory.where(user_id: context[:current_user].id).pluck(:name, :id)
+      want_to_categories.map { |name, id| { label: name, key: id } }
+    end
   end
 end
