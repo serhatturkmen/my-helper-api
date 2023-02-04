@@ -59,9 +59,9 @@ module Types
       raise GraphQL::ExecutionError, "Could not find WantToItem with id #{id}"
     end
 
-    field :want_to_category_option_type, [Types::OptionType], null: false
+    field :want_to_category_options, [Types::OptionType], null: false
 
-    def want_to_category_option_type
+    def want_to_category_options
       authorized?(context)
 
       want_to_categories = WantToCategory.where(user_id: context[:current_user].id).pluck(:name, :id)

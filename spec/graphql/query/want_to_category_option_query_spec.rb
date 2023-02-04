@@ -38,18 +38,17 @@ RSpec.describe('Query', type: :request) do
 
     expect(json['data']['wantToCategoryOptions'].count).to(eq(2))
     expect(json['data']['wantToCategoryOptions'].pluck('label')).to(match_array([want_to_category.name, want_to_category_2.name]))
-    expect(json['data']['wantToCategoryOptions'].pluck('key')).to(match_array([want_to_category, want_to_category_2]))
+    expect(json['data']['wantToCategoryOptions'].pluck('key')).to(match_array([want_to_category.id.to_s, want_to_category_2.id.to_s]))
   end
 
-  it 'success without item' do
-    want_to_item.destroy
-    want_to_item_2.destroy
+  it 'success without category' do
+    want_to_category.destroy
+    want_to_category_2.destroy
 
     request
     json = JSON.parse(response.body)
 
-    expect(json['data']['wantToCategories'].count).to(eq(2))
-    expect(json['data']['wantToCategories'].pluck('count')).to(match_array([0, 0]))
+    expect(json['data']['wantToCategoryOptions'].count).to(eq(0))
   end
 
   it 'invalid token' do
