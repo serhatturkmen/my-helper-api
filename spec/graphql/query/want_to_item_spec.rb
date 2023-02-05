@@ -9,10 +9,10 @@ RSpec.describe('Query', type: :request) do
         description
         url
         position
-		  wantToCategory {
-			  id
-			  name
-		  }
+        wantToCategory {
+          id
+          name
+        }
       }
     }
     |
@@ -41,6 +41,7 @@ RSpec.describe('Query', type: :request) do
     json = JSON.parse(response.body)
 
     expect(json['data']['wantToItem']['name']).to(eq(want_to_item.name))
+    expect(json['data']['wantToItem']['wantToCategory']['name']).to(eq(want_to_category.name))
   end
 
   it 'fail when another item id' do
