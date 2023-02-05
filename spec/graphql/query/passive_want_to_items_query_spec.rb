@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe('Query', type: :request) do
-  def query_string(id)
+  def query_string
     %|
     query {
-      passiveWantToItems(id: "#{id}") {
+      passiveWantToItems {
         name
         description
         url
@@ -16,7 +16,7 @@ RSpec.describe('Query', type: :request) do
 
   let(:user) { create(:user) }
   let(:want_to_category) { create(:want_to_category, user: user) }
-  let(:want_to_item) { create(:want_to_item, want_to_category: want_to_category) }
+  let(:want_to_item) { create(:want_to_item, active: false, want_to_category: want_to_category) }
   let(:want_to_item_2) { create(:want_to_item, want_to_category: create(:want_to_category, user: create(:user))) }
 
   let(:headers) do
@@ -28,28 +28,21 @@ RSpec.describe('Query', type: :request) do
     want_to_item_2
   end
 
-  def request(id)
-    post('/graphql', params: { query: query_string(id) }, headers: headers)
+  def request
+    post('/graphql', params: { query: query_string }, headers: headers)
   end
 
   it 'success' do
-    request(want_to_item.id)
+    request
     json = JSON.parse(response.body)
 
-    expect(json['data']['wantToItem']['name']).to(eq(want_to_item.name))
-  end
-
-  it 'fail when another item id' do
-    request(want_to_item_2.id)
-    json = JSON.parse(response.body)
-
-    expect(json['errors']).to(be)
+    expect(json['data']['passiveWantToItems'].pluck('name')).to(eq([want_to_item.name]))
   end
 
   it 'invalid token' do
     headers['Api-Token'] = 'invalid'
 
-    request(want_to_category.id)
+    request
     json = JSON.parse(response.body)
 
     expect(json['errors']).to(be)
