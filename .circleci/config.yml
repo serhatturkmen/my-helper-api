@@ -52,7 +52,7 @@ jobs:
           name: Run tests
           command: bundle exec rspec --profile 10 --color --out /tmp/test-results/rspec.xml
       - store_test_results:
-          path: test-results
+          path: /tmp/test-results
 
 workflows:
   version: 2
