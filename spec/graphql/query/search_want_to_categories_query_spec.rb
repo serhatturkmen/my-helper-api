@@ -4,30 +4,28 @@ RSpec.describe('Query', type: :request) do
   def query_string(query)
     %|
     query {
-      searchWantToItem(query: "#{query}") {
+      searchWantToCategories(query: "#{query}") {
         name
-        description
-        url
-        position
       }
     }
     |
   end
 
   let(:user) { create(:user) }
-  let(:want_to_category) { create(:want_to_category, user: user) }
-  let(:want_to_item) { create(:want_to_item, name: 'Test', want_to_category: want_to_category) }
-  let(:want_to_item_2) { create(:want_to_item, name: 'Deneme', want_to_category: want_to_category) }
-  let(:want_to_item_3) { create(:want_to_item, name: 'Deneme-2', want_to_category: want_to_category) }
+  let(:want_to_category) { create(:want_to_category, name: 'Test', user: user) }
+  let(:want_to_category_2) { create(:want_to_category, name: 'Deneme', user: user) }
+  let(:want_to_category_3) { create(:want_to_category, name: 'Deneme-2', user: user) }
+  let(:want_to_category_4) { create(:want_to_category, name: 'Test-2', user: create(:user)) }
 
   let(:headers) do
     { 'Api-Token' => user.token }
   end
 
   before do
-    want_to_item
-    want_to_item_2
-    want_to_item_3
+    want_to_category
+    want_to_category_2
+    want_to_category_3
+    want_to_category_4
   end
 
   def request(query)
@@ -40,8 +38,8 @@ RSpec.describe('Query', type: :request) do
     request(search_query)
     json = JSON.parse(response.body)
 
-    expect(json['data']['searchWantToItem'].count).to(eq(1))
-    expect(json['data']['searchWantToItem'].first['name']).to(eq(want_to_item.name))
+    expect(json['data']['searchWantToCategories'].count).to(eq(1))
+    expect(json['data']['searchWantToCategories'].first['name']).to(eq(want_to_category.name))
   end
 
   it 'return two items' do
@@ -50,8 +48,8 @@ RSpec.describe('Query', type: :request) do
     request(search_query)
     json = JSON.parse(response.body)
 
-    expect(json['data']['searchWantToItem'].count).to(eq(2))
-    expect(json['data']['searchWantToItem'].pluck('name')).to(match_array([want_to_item_2.name, want_to_item_3.name]))
+    expect(json['data']['searchWantToCategories'].count).to(eq(2))
+    expect(json['data']['searchWantToCategories'].pluck('name')).to(match_array([want_to_category_2.name, want_to_category_3.name]))
   end
 
   it 'fail not found want to item' do
