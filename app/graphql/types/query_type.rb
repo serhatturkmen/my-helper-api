@@ -76,5 +76,19 @@ module Types
       want_to_categories = WantToCategory.where(user_id: context[:current_user].id).pluck(:name, :id)
       want_to_categories.map { |name, id| { label: name, key: id } }
     end
+
+    field :search_want_to_item, [WantToItemType], null: false do
+      argument :query, String, required: true
+    end
+
+    def search_want_to_item(query:)
+      if query.blank?
+        raise GraphQL::ExecutionError, "Query cannot be blank"
+      end
+      authorized?(context)
+
+      want_to_category_ids = context[:current_user].want_to_categories.pluck(:id)
+      WantToItem.where(want_to_category_id: want_to_category_ids).where("name ILIKE ?", "%#{query}%")
+    end
   end
 end
