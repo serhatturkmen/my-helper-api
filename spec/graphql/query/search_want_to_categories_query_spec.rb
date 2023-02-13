@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe('Query', type: :request) do
-  def query_string(query)
+  def query_string(search_query)
     %|
     query {
-      searchWantToCategories(query: "#{query}") {
+      searchWantToCategories(search_query: "#{search_query}") {
         name
       }
     }
@@ -28,8 +28,8 @@ RSpec.describe('Query', type: :request) do
     want_to_category_4
   end
 
-  def request(query)
-    post('/graphql', params: { query: query_string(query) }, headers: headers)
+  def request(search_query)
+    post('/graphql', params: { query: query_string(search_query) }, headers: headers)
   end
 
   it 'success' do

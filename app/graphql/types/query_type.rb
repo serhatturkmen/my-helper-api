@@ -78,16 +78,15 @@ module Types
     end
 
     field :search_want_to_categories, [WantToCategoryType], null: false do
-      argument :query, String, required: true
+      argument :search_query, String, required: true, camelize: false
     end
 
-    def search_want_to_categories(query:)
-      if query.blank?
-        raise GraphQL::ExecutionError, "Query cannot be blank"
-      end
+    def search_want_to_categories(search_query:)
+      raise GraphQL::ExecutionError, 'Query cannot be blank' if search_query.blank?
+
       authorized?(context)
 
-      context[:current_user].want_to_categories.where("name ILIKE ?", "%#{query}%")
+      context[:current_user].want_to_categories.where('name ILIKE ?', "%#{search_query}%")
     end
   end
 end
