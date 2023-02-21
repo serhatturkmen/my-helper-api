@@ -2,17 +2,17 @@ module Mutations
   class Login < Mutations::BaseMutation
     graphql_name 'Login'
 
-    argument :username, String, required: true
+    argument :email, String, required: true
     argument :password, String, required: true
 
     field :errors, [String], null: false
     field :user, Types::UserType, null: true
 
-    def resolve(username:, password:)
-      user = User.authenticate(username, password)
+    def resolve(email:, password:)
+      user = User.authenticate(email, password)
 
       if user.nil?
-        { user: nil, errors: ['Username or password is wrong.'] }
+        { user: nil, errors: ['Email or password is wrong.'] }
       else
         context[:session][:token] = user.token
         { user: user, errors: [] }

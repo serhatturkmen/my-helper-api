@@ -14,13 +14,13 @@ RSpec.describe('Query', type: :request) do
     |
   end
 
-  let(:username) { Faker::Internet.username(specifier: 6) }
+  let(:email) { Faker::Internet.email }
   let(:password) { Faker::Internet.password(min_length: 6) }
-  let(:user) { create(:user, username: username, password: password) }
+  let(:user) { create(:user, email: email, password: password) }
   let(:variables) do
     {
       "input": {
-        "username": username,
+        "email": email,
         "password": password
       }
     }
@@ -43,7 +43,7 @@ RSpec.describe('Query', type: :request) do
   end
 
   it 'fail login' do
-    variables[:input][:username] = 'dot'
+    variables[:input][:email] = 'test@test.com'
 
     request
     json = JSON.parse(response.body)
